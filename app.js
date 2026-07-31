@@ -35,6 +35,26 @@ app.get('/ruta4/', (req, res) => {
         <p>Pagina: ${pagina}</p>
     `)
 })
+//================================================
+
+app.get("/saludo/:nombre", (req, res) => {
+    const nombre = req.params.nombre;
+
+    if (nombre.length < 3) {
+        return res.status(400).send("El nombre es muy corto");
+    }
+
+    res.send(`Hola ${nombre}, bienvenido`);
+});
+
+
+app.get("/productos/:nombre", (req, res) => {
+    const nombre = req.params.nombre;
+
+    res.json({ "producto": nombre });
+    
+});
+
 
 app.listen(port, () => {
     console.log( `SERVIDOR: http://localhost:${port}` );
