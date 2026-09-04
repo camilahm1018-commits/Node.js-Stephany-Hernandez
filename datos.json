@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "nombre": "Camila",
+    "correo": "camila@gmail.com",
+    "imagen": "/imagenes/mifoto.pg",
+    "clave": "12345"
+  },
+  {
+    "id": 1,
+    "nombre": "Camila",
+    "correo": "camila@gmail.com",
+    "imagen": "/imagenes/mifoto.pg",
+    "clave": "12345"
+  },
+  {
+    "id": 1,
+    "nombre": "Pedro",
+    "correo": "pedro@gmail.com",
+    "imagen": "/imagenes/mifoto.pg",
+    "clave": "123456"
+  }
+]

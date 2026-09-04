@@ -1,3 +1,4 @@
+const { error } = require('console');
 const express = require('express');
 const app= express();
 require('dotenv').config();
@@ -6,6 +7,11 @@ const port = process.env.PUERTO || 3000;
 app.use(express.json()) 
 app.use (express.urlencoded({extended:true}))
 
+//leer archivo
+const sistemaArchivo = require("fs");
+const ruta = require("path");
+
+const rutaArchivo = ruta.join(__dirname, "datos.json");
 app.get('/', (req, res) => {
     res.send('Aprendicez ficha 3407186');
 });
@@ -13,10 +19,15 @@ app.get('/', (req, res) => {
 
 //endpoint para listar aprendices
 app.get('/api/aprendices', (req , res) => {
-    res.status(200).json ({
-        "mensaje":"Lista de aprendices"
-         
+    //leer archivo json
+    sistemaArchivo.readFile(rutaArchivo, "utf-8", (error, datos)=>{
+        if (error){
+            return res.status(500).json({Error: "No se puede leer rutaArchivo, o BD"})
+        }
+        const listaAprendices = JSON.parse(datos)
+        res.status(200).json ({"mensaje":listaAprendices})
     })
+    
 })
 //endpoint para Listar un aprendiz
 
@@ -30,10 +41,25 @@ app.get('/api/aprendices/:id',(req, res) =>{
 //endpoint para crear aprendices
 
 app.post('/api/aprendices',(req, res) =>{
-    res.status(201).json ({
-        "mensaje":"Crear aprendices"
-         
+    const datosAprendiz = req.body 
+
+    //leer archivo json
+    sistemaArchivo.readFile(rutaArchivo, "utf-8", (error, datos)=>{
+        if (error){
+            return res.status(500).json({Error: "No se puede leer rutaArchivo, o BD"})
+        }
+        const listaAprendices = JSON.parse(datos)
+        //adicionar el nuevo aprendiz a la lista
+        listaAprendices.push(datosAprendiz)
+        sistemaArchivo.writeFile(rutaArchivo,JSON.stringify(listaAprendices, null, 2), (error)=>{
+            if (error){
+            return res.status(500).json({Error: "No se puede escribir en el archivo, o BD"})
+            }
+            res.status(200).json ({"mensaje":"Aprendiz creado", "Datos Aprendiz": datosAprendiz})
+        })
+        
     })
+    
 })
 
 //endpoint para editar aprendices
