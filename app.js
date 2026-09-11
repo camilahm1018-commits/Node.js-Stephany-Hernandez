@@ -3,9 +3,22 @@ const express = require('express');
 const app= express();
 require('dotenv').config();
 const port = process.env.PUERTO || 3000;
+//Importacion de middleware propios
+const registroMiddleware = require("./Middleware/registroMiddleware")
+const manejadorErrores = require("./Middleware/manejadorErrores")
 //middleware para parsear datos del body
 app.use(express.json()) 
 app.use (express.urlencoded({extended:true}))
+//middleware propios 
+//este middleware se ejucuat simepre que se haga una peticion al servidor(GET, POST, PUT, DELETE)
+app.use ((req, res, next)=>{
+    console.log(`Tiempo milisegundos: ${Date.now()}`)
+    console.log(`Fecha: ${new Date().toISOString()}`)
+    next()
+})
+
+app.use(registroMiddleware)
+
 
 //leer archivo
 const sistemaArchivo = require("fs");
@@ -23,7 +36,6 @@ const almacenamiento=multer.diskStorage({
         const extension = ruta.extname(file.originalname)
         cb(null,`${Date.now()}${extension}`)
     }
-
 })
 
 const cargar = multer({storage: almacenamiento})
@@ -58,6 +70,7 @@ app.get('/api/aprendices/:id',(req, res) =>{
 //endpoint para crear aprendices
 
 app.post('/api/aprendices',cargar.single("imagen"),(req, res) =>{
+    //validar que se envien datos
     const datosAprendiz = req.body 
     //AGREGAR LA RUTA DE LA IMAGEN
     datosAprendiz.imagen = req.file? `/misImagenes/${req.file.filename}` : "sin imagen"
@@ -98,6 +111,13 @@ app.delete('/api/aprendices/:id',(req, res) =>{
     })
 })
 
+//error provocado
+
+app.get("/error", (req, res, next)=>{
+    next(new Error("Error intencionado de mi app"))
+});
+
+
 //
 app.post("/rutaJson", (req, res)=>{
     const todosDatos =req.body
@@ -117,6 +137,7 @@ app.post("/rutaFormularios", (req, res)=>{
     res.json({Todosdatos: todosDatos, Mi_Programa: programa})
 })
 
+app.use(manejadorErrores)
 
 app.listen(port, () => {
     console.log( `Servidor: http://localhost:${port}` );
