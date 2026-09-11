@@ -61,5 +61,23 @@
     "correo": "paul@gmail.com",
     "clave": "1234567",
     "imagen": "/misImagenes/1788551186046.png"
+  },
+  {
+    "imagen": "sin imagen"
+  },
+  {
+    "imagen": "sin imagen"
+  },
+  {
+    "nombre": "camila",
+    "edad": "18",
+    "correo": "camila@gmail.com",
+    "imagen": "sin imagen"
+  },
+  {
+    "nombre": "pedro",
+    "edad": "48",
+    "correo": "pedro@gmail.com",
+    "imagen": "sin imagen"
   }
 ]
