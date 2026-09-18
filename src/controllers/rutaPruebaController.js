@@ -1,6 +1,6 @@
 
-const mostrarRuta =(req,res)=>{
-    res.json({mensaje:" es mi rutaPrueba y rutaPersonal"})
+const mostrarRuta = async(req,res)=>{
+    res.json({mensaje:" Esta mi rutaPrueba y rutaPersonal con controller"})
 }
 
 module.exports = mostrarRuta
