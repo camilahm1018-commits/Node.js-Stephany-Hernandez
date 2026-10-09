@@ -6,6 +6,7 @@ const pruebaRouter =require("./pruebaRouter")
 const usuariosRouter =require("./usuariosRouter")
 
 enrutador.use("/rutaPrueba", pruebaRouter)
-enrutador.use("/rutaUsuarios2", usuariosRouter)
+enrutador.use("/usuarios", usuariosRouter)
+
 
 module.exports = enrutador

@@ -1,6 +1,24 @@
+const {listarUsuarios} = require("../services/usuariosService")
 
 const mostrarRutaUsuarios = async(req,res)=>{
-    res.json({mensaje:" Estos son los usurios"})
+
+    try{
+        const usuarios = await listarUsuarios()
+        res.json({mensaje:"Estos son los usuarios",usuarios})
+    }catch(error){
+        res.status(500).json({mensaje:"Error al comunicarse con la base de datos.",Error:error.message})
+        }
+    
+    //res.json({mensaje:" Estos son los usurios"})
 }
 
-module.exports = mostrarRutaUsuarios
+//ruta de registrarse
+const registrarController = async(req,res)=>{
+    res.json({mensaje:" Ruta de registrarse"})
+}
+
+//ruta de login
+const loginController = async(req,res)=>{
+    res.json({mensaje:" Ruta para iniciar sesion"})
+}
+module.exports = {mostrarRutaUsuarios,registrarController, loginController}
