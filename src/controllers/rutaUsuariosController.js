@@ -1,10 +1,10 @@
-const {listarUsuarios} = require("../services/usuariosService")
+const listarUsuarios = require("../services/usuariosService")
 
-const mostrarRutaUsuarios = async(req,res)=>{
+const mostrarRutaUsuarios = async (req,res)=>{
 
     try{
         const usuarios = await listarUsuarios()
-        res.json({mensaje:"Estos son los usuarios",usuarios})
+        res.json(usuarios)
     }catch(error){
         res.status(500).json({mensaje:"Error al comunicarse con la base de datos.",Error:error.message})
         }
