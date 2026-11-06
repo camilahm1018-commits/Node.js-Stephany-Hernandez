@@ -9,8 +9,8 @@ enrutador.get("/listado/:id", mostrarUsuarioPorId)
 enrutador.post("/crearUser", crearUsuarioController)
 enrutador.put("/actualizar/:id", actualizarUsuarioController)
 enrutador.delete("/eliminar/:id", eliminarUsuarioController)
-enrutador.get("/registrar",registrarController)
-enrutador.get("/login", loginController)
+enrutador.post("/registrar",registrarController)
+enrutador.post("/login", loginController)
 //FUNCION (req,res) dbeer ir en el controlador
 
 module.exports = enrutador

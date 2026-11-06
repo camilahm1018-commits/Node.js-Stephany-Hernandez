@@ -1,4 +1,6 @@
-const {listarUsuarios,listarUsuarioPorId, crearUsuario, actualizarUsuario, eliminarUsuario} = require("../services/usuariosService")
+const {listarUsuarios,listarUsuarioPorId, crearUsuario, actualizarUsuario, eliminarUsuario, autenticar} = require("../services/usuariosService")
+const encriptacion = require("bcryptjs")
+const jwtoken = require("jsonwebtoken");
 
 //Listar usuarios
 const mostrarRutaUsuarios = async (req,res)=>{
@@ -80,7 +82,29 @@ const registrarController = async(req,res)=>{
 }
 
 //ruta de login
-const loginController = async(req,res)=>{
-    res.json({mensaje:" Ruta para iniciar sesion"})
-}
+
+const loginController = async (req, res) => {
+    const { email, clave } = req.body;
+    try {
+        const autenticarUsuario = await autenticar(email);
+
+        if (!autenticarUsuario) {
+            return res.status(404).json({mensaje: "Usuario no encontrado"});
+        }
+        const validarClave = await encriptacion.compare(clave,autenticarUsuario.clave);
+
+        if (!validarClave) {
+            return res.status(401).json({mensaje: "Credenciales incorrectas"});
+        }
+
+        const token = jwtoken.sign(
+            {id: autenticarUsuario.id,email: autenticarUsuario.email},
+            process.env.JWT_SECRET,{ expiresIn: "1h" }
+        );
+        return res.status(200).json({mensaje: "Autenticación exitosa",token: token});
+
+    } catch (error) {
+        return res.status(500).json({mensaje: "No se pudo autenticar",Error: error.message});
+    }
+};
 module.exports = {mostrarRutaUsuarios, mostrarUsuarioPorId,crearUsuarioController,actualizarUsuarioController,eliminarUsuarioController,registrarController, loginController}

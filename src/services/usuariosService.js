@@ -38,4 +38,14 @@ const eliminarUsuario = async (id) => {
         })
         return usuarios
         } 
-module.exports = {listarUsuarios,listarUsuarioPorId,crearUsuario, actualizarUsuario, eliminarUsuario }
+
+const autenticar = async(email)=>{
+        const usuarios = await ormPrisma.Usuarios.findUnique({
+                where: { email: email }
+        })
+        return usuarios
+}
+
+
+
+module.exports = {listarUsuarios,listarUsuarioPorId,crearUsuario, actualizarUsuario, eliminarUsuario, autenticar }
